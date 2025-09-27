@@ -75,7 +75,7 @@ def open_zarr(path, storage_opts=None):
     return xr.open_zarr(path, consolidated=True, storage_options=storage_opts).load()
 
 
-def create_evaluation_dataset(results, model_name, has_ensembles=True, has_sst=True):
+def create_evaluation_dataset(results, model_name, has_ensembles=True, has_sst=True, stochastic_samples=300):
     """Create xarray dataset from evaluation results"""
     n_samples = results['ssh'].shape[0]
     H, W = results['ssh'].shape[2], results['ssh'].shape[3]
@@ -89,7 +89,7 @@ def create_evaluation_dataset(results, model_name, has_ensembles=True, has_sst=T
     
     # Add stochastic_sample coordinate if we have ensembles
     if has_ensembles and 'ubm_pred_ensembles' in results:
-        coords['stochastic_sample'] = range(30)
+        coords['stochastic_sample'] = range(stochastic_samples)
     
     # Create data variables
     data_vars = {
