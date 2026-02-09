@@ -132,3 +132,44 @@ def get_device():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Using device: {device}")
     return device
+
+
+def create_evaluation_dataset_samples(results, model_name, has_ensembles=True, has_sst=True, stochastic_samples=300):
+    """Create xarray dataset from evaluation results"""
+    n_samples = results['ssh'].shape[0]
+    H, W = results['ssh'].shape[2], results['ssh'].shape[3]
+    
+    # Create base coordinate arrays
+    coords = {
+        'sample': range(n_samples),
+        'i': range(H),
+        'j': range(W)
+    }
+    
+    # Add stochastic_sample coordinate if we have ensembles
+    if has_ensembles and 'ubm_pred_ensembles' in results:
+        coords['stochastic_sample'] = range(stochastic_samples)
+    
+    # Create data variables
+    data_vars = {
+        'ssh': (['sample', 'i', 'j'], results['ssh'].squeeze(1)),
+        'ubm_truth': (['sample', 'i', 'j'], results['ubm_true'].squeeze(1)),
+        'bm_truth': (['sample', 'i', 'j'], results['bm_true'].squeeze(1)),
+        'ubm_pred_mean': (['sample', 'i', 'j'], results['ubm_pred_mu'].squeeze(1)),
+        'bm_pred_mean': (['sample', 'i', 'j'], results['bm_pred_mu'].squeeze(1))
+    }
+    
+    # Add SST if available
+    if has_sst and 'sst' in results:
+        data_vars['sst'] = (['sample', 'i', 'j'], results['sst'].squeeze(1))
+    
+    # Add ensemble results if available
+    if has_ensembles and 'ubm_pred_ensembles' in results:
+        print(f"Adding ensemble data with shape: {results['ubm_pred_ensembles'].shape}")
+        # Fix: squeeze the extra channel dimension (index 2)
+        data_vars['ubm_pred_samples'] = (['sample', 'stochastic_sample', 'i', 'j'], 
+                                        results['ubm_pred_ensembles'].squeeze(2))
+        data_vars['bm_pred_samples'] = (['sample', 'stochastic_sample', 'i', 'j'], 
+                                       results['bm_pred_ensembles'].squeeze(2))
+    
+    return xr.Dataset(data_vars, coords=coords)

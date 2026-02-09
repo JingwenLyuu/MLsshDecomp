@@ -1,88 +1,36 @@
-plots-Copy1.ipynb
-plots-Copy2.ipynb
-checkpoints
-figures
-
-# Python cache files
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
-
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
-
-# Temporary/untitled notebook files
-Untitled*.ipynb
-
-# Generated plots and figures (uncomment if you want to ignore them)
-# *.png
-# *.jpg
-# *.jpeg
-# *.pdf
-
-# IDE and editor files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
 
 # Virtual environments
 venv/
 env/
 ENV/
-.env
 .venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
 
 # Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
 *.egg-info/
-.installed.cfg
-*.egg
+dist/
+build/
 
-# PyInstaller
-*.manifest
-*.spec
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
+# Pytest
 .pytest_cache/
 
-# Environments
+# Jupyter
+.ipynb_checkpoints
+plots-Copy1.ipynb
+plots-Copy2.ipynb
+
+# Project specific
+checkpoints/
+figures/
+
+# Environment variables
 .env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
